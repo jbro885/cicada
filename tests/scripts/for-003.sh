@@ -8,7 +8,7 @@ echo after for-if
 echo
 
 echo before for-while
-counter=18
+counter=17
 for xxx in foo bar
     echo hello $xxx
     while echo "$counter" | grep -iq "^1.$"

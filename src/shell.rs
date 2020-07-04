@@ -667,6 +667,14 @@ fn expand_home(tokens: &mut types::Tokens) {
 }
 
 fn env_in_token(token: &str) -> bool {
+    // do not expand env in a command substitution
+    if libs::re::re_contains(token, r"^[a-zA-Z_][a-zA-Z0-9_]*=`.*`$")
+        || libs::re::re_contains(token, r"^[a-zA-Z_][a-zA-Z0-9_]*=\$\(.*\)$")
+        || libs::re::re_contains(token, r"^\$\(.+\)$")
+    {
+        return false;
+    }
+
     if libs::re::re_contains(token, r"\$\{?[a-zA-Z][a-zA-Z0-9_]*\}?") {
         return !libs::re::re_contains(token, r"='.*\$\{?[a-zA-Z][a-zA-Z0-9_]*\}?.*'$");
     }
